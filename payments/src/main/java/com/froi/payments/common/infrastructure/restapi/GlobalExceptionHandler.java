@@ -3,6 +3,7 @@ package com.froi.payments.common.infrastructure.restapi;
 
 import com.froi.payments.common.exceptions.DuplicatedEntityException;
 import com.froi.payments.common.exceptions.IllegalEnumException;
+import com.froi.payments.common.exceptions.InvalidSyntaxException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalEnumException.class)
     public ResponseEntity<String> handleIllegalEnumException(IllegalEnumException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(e.getMessage());
+    }
+
+    @ExceptionHandler(InvalidSyntaxException.class)
+    public ResponseEntity<String> handleInvalidSyntaxException(InvalidSyntaxException e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(e.getMessage());
