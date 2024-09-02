@@ -1,4 +1,4 @@
-package com.froi.payments.client.domain;
+package com.froi.payments.customer.domain;
 
 import com.froi.payments.common.DomainEntity;
 import com.froi.payments.common.exceptions.InvalidSyntaxException;

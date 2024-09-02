@@ -1,6 +1,6 @@
-package com.froi.payments.bill.infrastructure.outputadapters.db;
+package com.froi.payments.customer.infrastructure.outputadapters.db;
 
-import com.froi.payments.client.domain.Customer;
+import com.froi.payments.customer.domain.Customer;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

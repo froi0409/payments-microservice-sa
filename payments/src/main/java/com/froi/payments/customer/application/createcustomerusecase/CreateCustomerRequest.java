@@ -1,6 +1,6 @@
-package com.froi.payments.client.application.createcustomerusecase;
+package com.froi.payments.customer.application.createcustomerusecase;
 
-import com.froi.payments.client.domain.Customer;
+import com.froi.payments.customer.domain.Customer;
 import lombok.Value;
 
 import java.time.LocalDate;
