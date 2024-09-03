@@ -4,10 +4,12 @@ import com.froi.payments.bill.application.makebillusecase.MakeBillRequest;
 import com.froi.payments.bill.domain.Bill;
 import com.froi.payments.common.exceptions.IllegalEnumException;
 
+import java.io.ByteArrayOutputStream;
+
 public interface MakeBillInputPort {
-    void makeHotelBill(MakeBillRequest makeBillRequest) throws IllegalEnumException;
+    byte[] makeHotelBill(MakeBillRequest makeBillRequest) throws IllegalEnumException;
 
-    void makeRestaurantBill(MakeBillRequest makeBillRequest) throws IllegalEnumException;
+    byte[] makeRestaurantBill(MakeBillRequest makeBillRequest) throws IllegalEnumException;
 
-    void makeBill(Bill bill, MakeBillRequest makeBillRequest) throws IllegalEnumException;
+    byte[] makeBill(Bill bill, MakeBillRequest makeBillRequest) throws IllegalEnumException;
 }

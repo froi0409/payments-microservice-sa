@@ -30,12 +30,12 @@ public class DiscountDetailDbEntity {
     private String description;
 
     @Column
-    private Double discount;
+    private Double discounted;
 
     public BillDiscount toDomain() {
         return BillDiscount.builder()
                 .description(description)
-                .discounted(discount)
+                .discounted(discounted)
                 .build();
     }
 

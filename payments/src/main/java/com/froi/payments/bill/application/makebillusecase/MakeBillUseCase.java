@@ -10,6 +10,7 @@ import com.froi.payments.common.exceptions.IllegalEnumException;
 import com.froi.payments.customer.domain.Customer;
 import com.froi.payments.customer.infrastructure.outputadapters.db.CustomerDbEntityOutputAdapter;
 
+import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,28 +28,29 @@ public class MakeBillUseCase implements MakeBillInputPort {
     }
 
     @Override
-    public void makeHotelBill(MakeBillRequest makeBillRequest) throws IllegalEnumException {
+    public byte[] makeHotelBill(MakeBillRequest makeBillRequest) throws IllegalEnumException {
         Bill bill = MakeBillRequest.toDomain(makeBillRequest);
         bill.setPaidType(BillPaidType.HOTEL);
-        makeBill(bill, makeBillRequest);
+        return makeBill(bill, makeBillRequest);
     }
 
     @Override
-    public void makeRestaurantBill(MakeBillRequest makeBillRequest) throws IllegalEnumException {
+    public byte[] makeRestaurantBill(MakeBillRequest makeBillRequest) throws IllegalEnumException {
         Bill bill = MakeBillRequest.toDomain(makeBillRequest);
         bill.setPaidType(BillPaidType.RESTAURANT);
-        makeBill(bill, makeBillRequest);
+        return makeBill(bill, makeBillRequest);
     }
 
     @Override
-    public void makeBill(Bill bill, MakeBillRequest makeBillRequest) throws IllegalEnumException {
+    public byte[] makeBill(Bill bill, MakeBillRequest makeBillRequest) throws IllegalEnumException {
         // verify if customer exists (we are assuming that the customer exists in SAT system)
         bill.setCustomer(checkCustomer(makeBillRequest));
         bill.setBillDate(LocalDateTime.now());
         checkPersonalSale(makeBillRequest.getCustomerNit(), bill.getBillDiscounts());
-        bill.calculateTotal();
         bill.calculateSubTotal();
+        bill.calculateTotal();
         billDbEntityOutputAdapter.makeBill(bill);
+        return bill.generatePDF();
     }
 
     private Customer checkCustomer(MakeBillRequest makeBillRequest) {

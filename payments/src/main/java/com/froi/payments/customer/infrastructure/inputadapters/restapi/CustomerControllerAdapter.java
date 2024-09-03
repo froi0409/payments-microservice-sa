@@ -1,5 +1,6 @@
 package com.froi.payments.customer.infrastructure.inputadapters.restapi;
 
+import com.froi.payments.common.WebAdapter;
 import com.froi.payments.common.exceptions.DuplicatedEntityException;
 import com.froi.payments.common.exceptions.InvalidSyntaxException;
 import com.froi.payments.customer.application.createcustomerusecase.CreateCustomerRequest;
@@ -15,11 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/payments/v1/customers")
-public class CustomerControlleradapter {
+@WebAdapter
+public class CustomerControllerAdapter {
     private CreateCustomerInputPort createCustomerInputPort;
 
     @Autowired
-    public CustomerControlleradapter(CreateCustomerInputPort createCustomerInputPort) {
+    public CustomerControllerAdapter(CreateCustomerInputPort createCustomerInputPort) {
         this.createCustomerInputPort = createCustomerInputPort;
     }
 
