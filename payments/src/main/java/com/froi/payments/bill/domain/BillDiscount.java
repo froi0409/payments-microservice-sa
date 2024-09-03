@@ -1,5 +1,6 @@
 package com.froi.payments.bill.domain;
 
+import com.froi.payments.common.DomainEntity;
 import com.froi.payments.common.exceptions.InvalidSyntaxException;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
+@DomainEntity
 public class BillDiscount {
     private String description;
     private double discounted;

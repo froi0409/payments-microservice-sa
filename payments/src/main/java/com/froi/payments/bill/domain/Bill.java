@@ -21,23 +21,19 @@ public class Bill {
     private String documentId;
     private double subTotal;
     private double total;
+    private BillPaidType paidType;
     private LocalDateTime billDate;
     private List<BillDetail> billDetails;
     private List<BillDiscount> billDiscounts;
 
-    public void calculate() {
-        calculateSubTotal();
-        calculateTotal();
-    }
-
-    private void calculateSubTotal() {
+    public void calculateSubTotal() {
         subTotal = 0;
         for (BillDetail billDetail : billDetails) {
             subTotal += billDetail.getAmount();
         }
     }
 
-    private void calculateTotal() {
+    public void calculateTotal() {
         total = subTotal;
         for (BillDiscount billDiscount : billDiscounts) {
             total -= billDiscount.getDiscounted();

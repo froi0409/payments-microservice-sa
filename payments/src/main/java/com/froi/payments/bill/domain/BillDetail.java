@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
+@DomainEntity
 public class BillDetail {
     private String description;
     private double amount;
