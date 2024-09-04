@@ -24,6 +24,7 @@ public class Bill {
     private double subTotal;
     private double total;
     private BillPaidType paidType;
+    private String establishmentId;
     private LocalDateTime billDate;
     private List<BillDetail> billDetails;
     private List<BillDiscount> billDiscounts;
@@ -51,7 +52,8 @@ public class Bill {
             // Header
             StringBuilder htmlContent = new StringBuilder();
             htmlContent.append("<html><body>")
-                    .append("<h1>Factura ID: ").append(this.id).append("</h1>")
+                    .append("<h1>Establecimiento: ").append(this.establishmentId).append("</h1>")
+                    .append("<h2>Factura ID: ").append(this.id).append("</h2>")
                     .append("<p>Fecha: ").append(this.billDate).append("</p>")
                     .append("<p>Cliente: ").append(customerNit).append("</p>")
                     .append("<p>Total: ").append(this.total).append("</p>")

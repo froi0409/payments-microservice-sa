@@ -7,6 +7,7 @@ import com.froi.payments.bill.infrastructure.inputports.MakeBillInputPort;
 import com.froi.payments.bill.infrastructure.outputadapters.BillDbEntityOutputAdapter;
 import com.froi.payments.common.UseCase;
 import com.froi.payments.common.exceptions.IllegalEnumException;
+import com.froi.payments.common.exceptions.InvalidSyntaxException;
 import com.froi.payments.customer.domain.Customer;
 import com.froi.payments.customer.infrastructure.outputadapters.db.CustomerDbEntityOutputAdapter;
 
@@ -28,21 +29,21 @@ public class MakeBillUseCase implements MakeBillInputPort {
     }
 
     @Override
-    public byte[] makeHotelBill(MakeBillRequest makeBillRequest) throws IllegalEnumException {
+    public byte[] makeHotelBill(MakeBillRequest makeBillRequest) throws IllegalEnumException, InvalidSyntaxException {
         Bill bill = MakeBillRequest.toDomain(makeBillRequest);
         bill.setPaidType(BillPaidType.HOTEL);
         return makeBill(bill, makeBillRequest);
     }
 
     @Override
-    public byte[] makeRestaurantBill(MakeBillRequest makeBillRequest) throws IllegalEnumException {
+    public byte[] makeRestaurantBill(MakeBillRequest makeBillRequest) throws IllegalEnumException, InvalidSyntaxException {
         Bill bill = MakeBillRequest.toDomain(makeBillRequest);
         bill.setPaidType(BillPaidType.RESTAURANT);
         return makeBill(bill, makeBillRequest);
     }
 
     @Override
-    public byte[] makeBill(Bill bill, MakeBillRequest makeBillRequest) throws IllegalEnumException {
+    public byte[] makeBill(Bill bill, MakeBillRequest makeBillRequest) throws IllegalEnumException, InvalidSyntaxException {
         // verify if customer exists (we are assuming that the customer exists in SAT system)
         bill.setCustomer(checkCustomer(makeBillRequest));
         bill.setBillDate(LocalDateTime.now());
@@ -53,7 +54,7 @@ public class MakeBillUseCase implements MakeBillInputPort {
         return bill.generatePDF();
     }
 
-    private Customer checkCustomer(MakeBillRequest makeBillRequest) {
+    private Customer checkCustomer(MakeBillRequest makeBillRequest) throws InvalidSyntaxException {
         if (makeBillRequest.getCustomerNit() == null) {
             return null;
         }
@@ -70,6 +71,7 @@ public class MakeBillUseCase implements MakeBillInputPort {
                 .lastName(makeBillRequest.getOptionalCustomerLastName())
                 .birthDate(LocalDate.parse(makeBillRequest.getOptionalCustomerBirthDate()))
                 .build();
+        newCustomer.validateDpi();
         return customerDbEntityOutputAdapter.createCustomer(newCustomer);
     }
 

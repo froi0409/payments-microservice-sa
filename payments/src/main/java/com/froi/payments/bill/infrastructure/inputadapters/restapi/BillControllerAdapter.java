@@ -4,6 +4,7 @@ import com.froi.payments.bill.application.makebillusecase.MakeBillRequest;
 import com.froi.payments.bill.infrastructure.inputports.MakeBillInputPort;
 import com.froi.payments.common.WebAdapter;
 import com.froi.payments.common.exceptions.IllegalEnumException;
+import com.froi.payments.common.exceptions.InvalidSyntaxException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class BillControllerAdapter {
     }
 
     @PostMapping("/hotel")
-    public ResponseEntity<byte[]>  makeHotelBill(@RequestBody MakeBillRequest makeBillRequest) throws IllegalEnumException {
+    public ResponseEntity<byte[]>  makeHotelBill(@RequestBody MakeBillRequest makeBillRequest) throws IllegalEnumException, InvalidSyntaxException {
         byte[] bill = makeBillInputPort.makeHotelBill(makeBillRequest);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename=factura_hotel.pdf");
@@ -40,7 +41,7 @@ public class BillControllerAdapter {
     }
 
     @PostMapping("/restaurant")
-    public ResponseEntity<byte[]>  makeRestaurantBill(@RequestBody MakeBillRequest makeBillRequest) throws IllegalEnumException {
+    public ResponseEntity<byte[]>  makeRestaurantBill(@RequestBody MakeBillRequest makeBillRequest) throws IllegalEnumException, InvalidSyntaxException {
         byte[] bill = makeBillInputPort.makeRestaurantBill(makeBillRequest);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename=factura_hotel.pdf");

@@ -14,6 +14,7 @@ public class MakeBillRequest {
     String optionalCustomerFirstName;
     String optionalCustomerLastName;
     String optionalCustomerBirthDate;
+    String establishmentId;
     String documentId;
     List<BillDetail> billDetails;
     List<BillDiscount> billDiscounts;
@@ -21,6 +22,7 @@ public class MakeBillRequest {
 
     public static Bill toDomain(MakeBillRequest makeBillRequest) {
         return Bill.builder()
+                .establishmentId(makeBillRequest.getEstablishmentId())
                 .documentId(makeBillRequest.getDocumentId())
                 .billDetails(makeBillRequest.getBillDetails())
                 .billDiscounts(makeBillRequest.getBillDiscounts())

@@ -29,6 +29,9 @@ public class BillDbEntity {
     @Column(name = "paid_type")
     private Integer paidType;
 
+    @Column(name = "establishment_id")
+    private String establishmentId;
+
     @Column(name = "document_id")
     private String documentId;
 
@@ -48,6 +51,7 @@ public class BillDbEntity {
         return Bill.builder()
                 .id(UUID.fromString(id))
                 .paidType(BillPaidType.fromOrdinal(paidType))
+                .establishmentId(establishmentId)
                 .documentId(documentId)
                 .subTotal(subTotal)
                 .total(total)
@@ -58,6 +62,7 @@ public class BillDbEntity {
     public static BillDbEntity fromDomain(Bill bill) {
         return new BillDbEntity(UUID.randomUUID().toString(),
                 bill.getPaidType().ordinal(),
+                bill.getEstablishmentId(),
                 bill.getDocumentId(),
                 bill.getSubTotal(),
                 bill.getTotal(),
