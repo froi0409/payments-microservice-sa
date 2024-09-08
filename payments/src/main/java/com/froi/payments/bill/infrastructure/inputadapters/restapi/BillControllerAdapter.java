@@ -7,8 +7,10 @@ import com.froi.payments.bill.infrastructure.inputports.restapi.FindEstablishmen
 import com.froi.payments.common.WebAdapter;
 import com.froi.payments.common.exceptions.IllegalEnumException;
 import com.froi.payments.common.exceptions.InvalidSyntaxException;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
@@ -16,6 +18,7 @@ import java.io.ByteArrayOutputStream;
 @RestController
 @RequestMapping("/payments/v1/bills")
 @WebAdapter
+@SecurityRequirement(name = "bearerAuth")
 public class BillControllerAdapter {
     private MakeBillInputPort makeBillInputPort;
     private FindCustomerWithTheMostBillsInputPort findCustomerWithTheMostBillsInputPort;
@@ -29,6 +32,7 @@ public class BillControllerAdapter {
     }
 
     @PostMapping("/hotel")
+    @PreAuthorize("hasRole('HOTEL_EMPLOYEE')")
     public ResponseEntity<byte[]>  makeHotelBill(@RequestBody MakeBillRequest makeBillRequest) throws IllegalEnumException, InvalidSyntaxException {
         byte[] bill = makeBillInputPort.makeHotelBill(makeBillRequest);
         HttpHeaders headers = new HttpHeaders();
@@ -41,6 +45,7 @@ public class BillControllerAdapter {
     }
 
     @PostMapping("/restaurant")
+    @PreAuthorize("hasRole('RESTAURANT_EMPLOYEE')")
     public ResponseEntity<byte[]>  makeRestaurantBill(@RequestBody MakeBillRequest makeBillRequest) throws IllegalEnumException, InvalidSyntaxException {
         byte[] bill = makeBillInputPort.makeRestaurantBill(makeBillRequest);
         HttpHeaders headers = new HttpHeaders();
@@ -54,6 +59,7 @@ public class BillControllerAdapter {
     }
 
     @RequestMapping(method = RequestMethod.HEAD, value = "/isOneOfTheBest/{customerNit}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> findCustomerWithTheMostBills(@PathVariable String customerNit) {
         boolean customerWithTheMostBills = findCustomerWithTheMostBillsInputPort.findCustomerWithTheMostBills(customerNit);
         if (customerWithTheMostBills) {
@@ -68,6 +74,7 @@ public class BillControllerAdapter {
     }
 
     @GetMapping("/establishmentIncomes/{establishmentId}/{startDate}/{endDate}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<FindEstablishmentIncomesResponse> findEstablishmentIncomes(@PathVariable String establishmentId, @PathVariable String startDate, @PathVariable String endDate) {
         FindEstablishmentIncomesResponse response = findEstablishmentIncomesInputPort.findEstablishmentIncomes(establishmentId, startDate, endDate);
         return ResponseEntity
