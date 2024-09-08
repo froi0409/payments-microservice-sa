@@ -59,7 +59,19 @@ public class BillDbEntity {
                 .build();
     }
 
+    public Bill toDomainNoPaidType() {
+        return Bill.builder()
+                .id(UUID.fromString(id))
+                .establishmentId(establishmentId)
+                .documentId(documentId)
+                .subTotal(subTotal)
+                .total(total)
+                .billDate(billDate)
+                .build();
+    }
+
     public static BillDbEntity fromDomain(Bill bill) {
+        String customerNit = (bill.getCustomer() != null) ? bill.getCustomer().getNit() : null;
         return new BillDbEntity(UUID.randomUUID().toString(),
                 bill.getPaidType().ordinal(),
                 bill.getEstablishmentId(),
@@ -67,7 +79,7 @@ public class BillDbEntity {
                 bill.getSubTotal(),
                 bill.getTotal(),
                 bill.getBillDate(),
-                bill.getCustomer().getNit());
+                customerNit);
     }
 
 }

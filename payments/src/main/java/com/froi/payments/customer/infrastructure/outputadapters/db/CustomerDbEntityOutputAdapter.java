@@ -31,4 +31,6 @@ public class CustomerDbEntityOutputAdapter implements CreateCustomerOutputPort, 
         return customerDbEntityRepository.findById(nit)
                 .map(CustomerDbEntity::toDomain);
     }
+
+
 }

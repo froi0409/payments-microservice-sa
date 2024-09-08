@@ -46,7 +46,7 @@ public class Bill {
 
     public byte[] generatePDF() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        String customerNit = this.customer.getNit() != null ? this.customer.getNit() : "C/F";
+        String customerNit = this.customer != null ? this.customer.getNit() : "C/F";
 
         try {
             // Header
@@ -58,7 +58,7 @@ public class Bill {
                     .append("<p>Cliente: ").append(customerNit).append("</p>")
                     .append("<p>Total: ").append(this.total).append("</p>")
                     .append("<h2>Detalles de la Factura</h2>")
-                    .append("<table border='1'>")
+                    .append("<table>")
                     .append("<tr><th>Descripción</th><th>Monto</th></tr>");
 
             // Details
@@ -73,7 +73,7 @@ public class Bill {
 
             // Discounts
             htmlContent.append("<h2>Descuentos</h2>")
-                    .append("<table border='1'>")
+                    .append("<table>")
                     .append("<tr><th>Descripción</th><th>Descuento</th></tr>");
 
             for (BillDiscount billDiscount : billDiscounts) {
