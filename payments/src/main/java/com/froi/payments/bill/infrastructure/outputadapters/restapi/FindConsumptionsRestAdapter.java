@@ -54,7 +54,30 @@ public class FindConsumptionsRestAdapter implements FindCustomerConsumptionsOutp
     }
 
     @Override
-    public CustomerRestaurantsInformation findCustomerRestaurants(String orderId) {
+    public CustomerRestaurantsInformation findCustomerRestaurantsConsumptions(String orderId) {
+        String url = restaurantsUrl + "/v1/orders/" + orderId;
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+
+            ResponseEntity<CustomerRestaurantsInformation> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    requestEntity,
+                    CustomerRestaurantsInformation.class
+            );
+            if (response.getStatusCode() == HttpStatus.OK) {
+                return response.getBody();
+            }
+        } catch (HttpClientErrorException e) {
+            e.printStackTrace();
+            System.err.println("Error (" + e.getStatusCode() + "): " + e.getMessage());
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
+            return null;
+        }
         return null;
     }
 

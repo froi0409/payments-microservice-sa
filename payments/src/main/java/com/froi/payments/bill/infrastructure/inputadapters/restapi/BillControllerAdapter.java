@@ -86,11 +86,22 @@ public class BillControllerAdapter {
                 .body(response);
     }
 
+    @GetMapping("/findCustomerConsumptions/{customerNit}/{startDate}/{endDate}/{establishmentId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CustomerConsumptionsResponse> findCustomerConsumptionsByEstablishment(@PathVariable String customerNit, @PathVariable String startDate, @PathVariable String endDate, @PathVariable String establishmentId) throws IllegalEnumException {
+        System.out.println("se va a empezar");
+        CustomerConsumptionsResponse response = findCustomerConsumptionsInputPort.findCustomerConsumptions(customerNit, startDate, endDate, establishmentId);
+        System.out.println("va a terminar");
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
     @GetMapping("/findCustomerConsumptions/{customerNit}/{startDate}/{endDate}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CustomerConsumptionsResponse> findCustomerConsumptions(@PathVariable String customerNit, @PathVariable String startDate, @PathVariable String endDate) throws IllegalEnumException {
         System.out.println("se va a empezar");
-        CustomerConsumptionsResponse response = findCustomerConsumptionsInputPort.findCustomerConsumptions(customerNit, startDate, endDate);
+        CustomerConsumptionsResponse response = findCustomerConsumptionsInputPort.findCustomerConsumptions(customerNit, startDate, endDate, null);
         System.out.println("va a terminar");
         return ResponseEntity
                 .status(HttpStatus.OK)

@@ -32,17 +32,17 @@ public class CustomerConsumptionsUseCase implements FindCustomerConsumptionsInpu
 
 
     @Override
-    public CustomerConsumptionsResponse findCustomerConsumptions(String customerNit, String startDate, String endDate) throws IllegalEnumException {
+    public CustomerConsumptionsResponse findCustomerConsumptions(String customerNit, String startDate, String endDate, String establishmentId) throws IllegalEnumException {
         LocalDateTime start = LocalDateTime.parse(startDate + "T00:00:00");
         LocalDateTime end = LocalDateTime.parse(endDate + "T23:59:59");
 
         Customer customer = customerDbEntityOutputAdapter.findByNit(customerNit)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Customer with nit %s not found", customerNit)));
-        Double totalSpent = billDbEntityOutputAdapter.findTotalSpentByCustomerBetweenDates(customer.getNit(), start, end);
-        List<Bill> bills = billDbEntityOutputAdapter.findCustomerBills(customer.getNit(), start, end);
+        Double totalSpent = billDbEntityOutputAdapter.findTotalSpentByCustomerBetweenDates(customer.getNit(), start, end, establishmentId);
+        List<Bill> bills = billDbEntityOutputAdapter.findCustomerBills(customer.getNit(), start, end, establishmentId);
 
         List<CustomerBookingsInformation> customerBookingsInformation = findBookingsInformation(bills);
-        List<CustomerRestaurantsInformation> customerRestaurantsInformation = new ArrayList<>();
+        List<CustomerRestaurantsInformation> customerRestaurantsInformation = findRestaurantInformation(bills);
 
         return CustomerConsumptionsResponse.builder()
                 .customerNit(customer.getNit())
@@ -68,4 +68,21 @@ public class CustomerConsumptionsUseCase implements FindCustomerConsumptionsInpu
         }
         return bookingsInformationList;
     }
+
+    private List<CustomerRestaurantsInformation> findRestaurantInformation(List<Bill> bills) {
+        List<CustomerRestaurantsInformation> restaurantsInformationList = new ArrayList<>();
+        for (Bill bill : bills) {
+            if (bill.getDocumentId() != null && bill.getPaidType() == BillPaidType.RESTAURANT) {
+                System.out.println("Document: " + bill.getDocumentId());
+                CustomerRestaurantsInformation restaurantsInformation = findConsumptionsRestAdapter.findCustomerRestaurantsConsumptions(bill.getDocumentId());
+                if (restaurantsInformation != null) {
+                    System.out.println("Order: " + restaurantsInformation.getOrderId());
+                    restaurantsInformationList.add(restaurantsInformation);
+                    System.out.println("paso el order");
+                }
+            }
+        }
+        return restaurantsInformationList;
+    }
+
 }

@@ -75,9 +75,9 @@ public class BillDbEntityOutputAdapter implements MakeBillOutputPort, FindBillOu
     }
 
     @Override
-    public List<Bill> findCustomerBills(String customerNit, LocalDateTime start, LocalDateTime end) throws IllegalEnumException {
+    public List<Bill> findCustomerBills(String customerNit, LocalDateTime start, LocalDateTime end, String establishmentId) throws IllegalEnumException {
         List<Bill> bills = new ArrayList<>();
-        for (BillDbEntity billDbEntity : billDbEntityRepository.findAllCustomerHotelBillsBetweenDates(customerNit, start, end)) {
+        for (BillDbEntity billDbEntity : billDbEntityRepository.findAllCustomerHotelBillsBetweenDates(customerNit, start, end, establishmentId)) {
             Bill domain = billDbEntity.toDomain();
             bills.add(domain);
         }
@@ -85,8 +85,8 @@ public class BillDbEntityOutputAdapter implements MakeBillOutputPort, FindBillOu
     }
 
     @Override
-    public Double findTotalSpentByCustomerBetweenDates(String customerId, LocalDateTime start, LocalDateTime end) {
-        return billDbEntityRepository.findTotalSpentByCustomer(customerId, start, end)
+    public Double findTotalSpentByCustomerBetweenDates(String customerId, LocalDateTime start, LocalDateTime end, String establishmentId) {
+        return billDbEntityRepository.findTotalSpentByCustomer(customerId, start, end, establishmentId)
                 .orElse(0.00);
     }
 }

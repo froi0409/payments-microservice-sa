@@ -5,6 +5,6 @@ import com.froi.payments.bill.application.customerconsumptionsusecase.CustomerRe
 
 public interface FindCustomerConsumptionsOutputPort {
     CustomerBookingsInformation findCustomerHotelConsumptions(String bookingId);
-    CustomerRestaurantsInformation findCustomerRestaurants(String orderId);
+    CustomerRestaurantsInformation findCustomerRestaurantsConsumptions(String orderId);
 
 }

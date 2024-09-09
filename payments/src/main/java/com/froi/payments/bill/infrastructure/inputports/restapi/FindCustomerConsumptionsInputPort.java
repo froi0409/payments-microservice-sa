@@ -4,5 +4,5 @@ import com.froi.payments.bill.application.customerconsumptionsusecase.CustomerCo
 import com.froi.payments.common.exceptions.IllegalEnumException;
 
 public interface FindCustomerConsumptionsInputPort {
-    CustomerConsumptionsResponse findCustomerConsumptions(String customerNit, String startDate, String endDate) throws IllegalEnumException;
+    CustomerConsumptionsResponse findCustomerConsumptions(String customerNit, String startDate, String endDate, String establishmentId) throws IllegalEnumException;
 }
