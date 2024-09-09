@@ -89,4 +89,16 @@ public class BillDbEntityOutputAdapter implements MakeBillOutputPort, FindBillOu
         return billDbEntityRepository.findTotalSpentByCustomer(customerId, start, end, establishmentId)
                 .orElse(0.00);
     }
+
+    @Override
+    public Double findTotalHotelEarnings() {
+        return billDbEntityRepository.findHotelEarnings()
+                .orElse(0.00);
+    }
+
+    @Override
+    public Double findTotalRestaurantEarnings() {
+        return billDbEntityRepository.findRestaurantEarnings()
+                .orElse(0.00);
+    }
 }

@@ -10,4 +10,6 @@ public interface FindBillOutputPort {
     List<String> findCustomersWithTheMostBills();
     List<Bill> findCustomerBills(String customerNit, LocalDateTime start, LocalDateTime end, String establishmentId) throws IllegalEnumException;
     Double findTotalSpentByCustomerBetweenDates(String customerId, LocalDateTime start, LocalDateTime end, String establishmentId);
+    Double findTotalHotelEarnings();
+    Double findTotalRestaurantEarnings();
 }

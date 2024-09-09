@@ -1,9 +1,11 @@
 package com.froi.payments.bill.infrastructure.inputadapters.restapi;
 
 import com.froi.payments.bill.application.customerconsumptionsusecase.CustomerConsumptionsResponse;
+import com.froi.payments.bill.application.earmingsusecase.EarningsResponse;
 import com.froi.payments.bill.application.makebillusecase.MakeBillRequest;
 import com.froi.payments.bill.infrastructure.inputports.FindCustomerWithTheMostBillsInputPort;
 import com.froi.payments.bill.infrastructure.inputports.MakeBillInputPort;
+import com.froi.payments.bill.infrastructure.inputports.restapi.EarningsInputPort;
 import com.froi.payments.bill.infrastructure.inputports.restapi.FindCustomerConsumptionsInputPort;
 import com.froi.payments.bill.infrastructure.inputports.restapi.FindEstablishmentIncomesInputPort;
 import com.froi.payments.common.WebAdapter;
@@ -26,13 +28,15 @@ public class BillControllerAdapter {
     private FindCustomerWithTheMostBillsInputPort findCustomerWithTheMostBillsInputPort;
     private FindEstablishmentIncomesInputPort findEstablishmentIncomesInputPort;
     private FindCustomerConsumptionsInputPort findCustomerConsumptionsInputPort;
+    private EarningsInputPort earningsInputPort;
 
     @Autowired
-    public BillControllerAdapter(MakeBillInputPort makeBillInputPort, FindCustomerWithTheMostBillsInputPort findCustomerWithTheMostBillsInputPort, FindEstablishmentIncomesInputPort findEstablishmentIncomesInputPort, FindCustomerConsumptionsInputPort findCustomerConsumptionsInputPort) {
+    public BillControllerAdapter(MakeBillInputPort makeBillInputPort, FindCustomerWithTheMostBillsInputPort findCustomerWithTheMostBillsInputPort, FindEstablishmentIncomesInputPort findEstablishmentIncomesInputPort, FindCustomerConsumptionsInputPort findCustomerConsumptionsInputPort, EarningsInputPort earningsInputPort) {
         this.makeBillInputPort = makeBillInputPort;
         this.findCustomerWithTheMostBillsInputPort = findCustomerWithTheMostBillsInputPort;
         this.findEstablishmentIncomesInputPort = findEstablishmentIncomesInputPort;
         this.findCustomerConsumptionsInputPort = findCustomerConsumptionsInputPort;
+        this.earningsInputPort = earningsInputPort;
     }
 
     @PostMapping("/hotel")
@@ -103,6 +107,15 @@ public class BillControllerAdapter {
         System.out.println("se va a empezar");
         CustomerConsumptionsResponse response = findCustomerConsumptionsInputPort.findCustomerConsumptions(customerNit, startDate, endDate, null);
         System.out.println("va a terminar");
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @GetMapping("/earnings")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<EarningsResponse> findEarnings() {
+        EarningsResponse response = earningsInputPort.getEarningsReport();
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(response);

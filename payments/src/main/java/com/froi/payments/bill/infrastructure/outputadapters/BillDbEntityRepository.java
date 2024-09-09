@@ -28,5 +28,11 @@ public interface BillDbEntityRepository extends JpaRepository<BillDbEntity, Stri
     @Query("SELECT SUM(b.total) FROM BillDbEntity b WHERE b.customer = :customerNit AND b.billDate BETWEEN :start AND :end AND (:establishmentId IS NULL OR :establishmentId = '' OR b.establishmentId = :establishmentId) GROUP BY b.customer")
     Optional<Double> findTotalSpentByCustomer(@Param("customerNit") String customerNit, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end, @Param("establishmentId") String establishmentId);
 
+    @Query("SELECT SUM(b.total) FROM BillDbEntity b WHERE b.paidType = 0")
+    Optional<Double> findHotelEarnings();
+
+    @Query("SELECT SUM(b.total) FROM BillDbEntity b WHERE b.paidType = 1")
+    Optional<Double> findRestaurantEarnings();
+
 
 }
