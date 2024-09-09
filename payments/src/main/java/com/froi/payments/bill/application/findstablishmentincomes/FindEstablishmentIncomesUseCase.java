@@ -4,7 +4,6 @@ import com.froi.payments.bill.domain.Bill;
 import com.froi.payments.bill.infrastructure.inputadapters.restapi.FindEstablishmentIncomesResponse;
 import com.froi.payments.bill.infrastructure.inputports.restapi.FindEstablishmentIncomesInputPort;
 import com.froi.payments.bill.infrastructure.outputadapters.ReportBillsDbOutputAdapter;
-import com.froi.payments.bill.infrastructure.outputports.FindEstablishmentIncomesOutputPort;
 import com.froi.payments.common.UseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 

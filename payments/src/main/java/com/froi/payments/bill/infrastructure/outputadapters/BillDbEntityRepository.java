@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BillDbEntityRepository extends JpaRepository<BillDbEntity, String> {
@@ -21,5 +21,12 @@ public interface BillDbEntityRepository extends JpaRepository<BillDbEntity, Stri
 
     @Query("SELECT e FROM BillDbEntity e WHERE e.establishmentId = :establishmentId AND e.billDate between :startDate and :endDate")
     List<BillDbEntity> findAllByEstablishmentId(@Param("establishmentId") String establishmentId, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+
+    @Query("SELECT e FROM BillDbEntity e WHERE e.customer = :customerNit AND e.billDate between :startDate and :endDate")
+    List<BillDbEntity> findAllCustomerHotelBillsBetweenDates(@Param("customerNit") String customerNit, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+
+    @Query("SELECT SUM(b.total) FROM BillDbEntity b WHERE b.customer = :customerNit AND b.billDate BETWEEN :start AND :end GROUP BY b.customer")
+    Optional<Double> findTotalSpentByCustomer(@Param("customerNit") String customerNit, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
 
 }

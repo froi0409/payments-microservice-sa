@@ -3,20 +3,18 @@ package com.froi.payments.bill.infrastructure.outputadapters;
 import com.froi.payments.bill.domain.Bill;
 import com.froi.payments.bill.domain.BillDetail;
 import com.froi.payments.bill.domain.BillDiscount;
-import com.froi.payments.bill.infrastructure.outputports.FindBillOutputPort;
-import com.froi.payments.bill.infrastructure.outputports.MakeBillOutputPort;
+import com.froi.payments.bill.infrastructure.outputports.db.FindBillOutputPort;
+import com.froi.payments.bill.infrastructure.outputports.db.MakeBillOutputPort;
 import com.froi.payments.common.PersistenceAdapter;
 import com.froi.payments.common.exceptions.IllegalEnumException;
-import com.froi.payments.customer.domain.Customer;
-import com.froi.payments.customer.infrastructure.outputports.FindCustomerOutputPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @PersistenceAdapter
@@ -74,5 +72,21 @@ public class BillDbEntityOutputAdapter implements MakeBillOutputPort, FindBillOu
                 .stream()
                 .map(objects -> (String) objects[0])
                 .toList();
+    }
+
+    @Override
+    public List<Bill> findCustomerBills(String customerNit, LocalDateTime start, LocalDateTime end) throws IllegalEnumException {
+        List<Bill> bills = new ArrayList<>();
+        for (BillDbEntity billDbEntity : billDbEntityRepository.findAllCustomerHotelBillsBetweenDates(customerNit, start, end)) {
+            Bill domain = billDbEntity.toDomain();
+            bills.add(domain);
+        }
+        return bills;
+    }
+
+    @Override
+    public Double findTotalSpentByCustomerBetweenDates(String customerId, LocalDateTime start, LocalDateTime end) {
+        return billDbEntityRepository.findTotalSpentByCustomer(customerId, start, end)
+                .orElse(0.00);
     }
 }

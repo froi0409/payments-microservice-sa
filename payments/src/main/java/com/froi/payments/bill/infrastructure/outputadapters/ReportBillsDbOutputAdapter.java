@@ -3,12 +3,10 @@ package com.froi.payments.bill.infrastructure.outputadapters;
 import com.froi.payments.bill.domain.Bill;
 import com.froi.payments.bill.domain.BillDetail;
 import com.froi.payments.bill.domain.BillDiscount;
-import com.froi.payments.bill.infrastructure.outputports.FindEstablishmentIncomesOutputPort;
+import com.froi.payments.bill.infrastructure.outputports.db.FindEstablishmentIncomesOutputPort;
 import com.froi.payments.common.PersistenceAdapter;
-import com.froi.payments.common.exceptions.IllegalEnumException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

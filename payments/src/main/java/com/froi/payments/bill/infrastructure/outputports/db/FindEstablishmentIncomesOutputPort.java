@@ -1,4 +1,4 @@
-package com.froi.payments.bill.infrastructure.outputports;
+package com.froi.payments.bill.infrastructure.outputports.db;
 
 import com.froi.payments.bill.domain.Bill;
 
